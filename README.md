@@ -13,34 +13,34 @@
 ### 通道1：GitHub 直连（海外/网络好时）
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/<你的用户名>/oc-deploy/main/scripts/deploy.sh | bash
+curl -fsSL https://raw.githubusercontent.com/yff124/oc-deploy/main/scripts/deploy.sh | bash
 ```
 
 ### 通道2：jsDelivr CDN（国内推荐，实测 0.7 秒）
 
 ```bash
-curl -fsSL https://cdn.jsdelivr.net/gh/<你的用户名>/oc-deploy@main/scripts/deploy.sh | bash
+curl -fsSL https://cdn.jsdelivr.net/gh/yff124/oc-deploy@main/scripts/deploy.sh | bash
 ```
 
 ### Windows PowerShell（管理员）
 
 ```powershell
 # 通道1
-iwr -useb https://raw.githubusercontent.com/<你的用户名>/oc-deploy/main/scripts/deploy.ps1 | iex
+iwr -useb https://raw.githubusercontent.com/yff124/oc-deploy/main/scripts/deploy.ps1 | iex
 
 # 通道2（国内推荐）
-iwr -useb https://cdn.jsdelivr.net/gh/<你的用户名>/oc-deploy@main/scripts/deploy.ps1 | iex
+iwr -useb https://cdn.jsdelivr.net/gh/yff124/oc-deploy@main/scripts/deploy.ps1 | iex
 ```
 
 **双保险命令**（自动切换，推荐给客户用）：
 
 ```bash
-(curl -fsSL --max-time 20 https://cdn.jsdelivr.net/gh/<你的用户名>/oc-deploy@main/scripts/deploy.sh \
- || curl -fsSL --max-time 30 https://raw.githubusercontent.com/<你的用户名>/oc-deploy/main/scripts/deploy.sh) | bash
+(curl -fsSL --max-time 20 https://cdn.jsdelivr.net/gh/yff124/oc-deploy@main/scripts/deploy.sh \
+ || curl -fsSL --max-time 30 https://raw.githubusercontent.com/yff124/oc-deploy/main/scripts/deploy.sh) | bash
 ```
 
 > ⚠️ **超时值很关键**：实测网络波动时 8 秒会误判失败，建议 `--max-time` 不少于 20 秒。
-> 把 `<你的用户名>` 换成你自己的 GitHub 用户名。
+> 把 `yff124` 换成你自己的 GitHub 用户名。
 
 ### 如果两条命令都失败
 
@@ -51,7 +51,7 @@ iwr -useb https://cdn.jsdelivr.net/gh/<你的用户名>/oc-deploy@main/scripts/d
 bash deploy.sh
 
 # 方式B：用 wget 代替 curl
-wget -qO- https://cdn.jsdelivr.net/gh/<你的用户名>/oc-deploy@main/scripts/deploy.sh | bash
+wget -qO- https://cdn.jsdelivr.net/gh/yff124/oc-deploy@main/scripts/deploy.sh | bash
 ```
 
 ---
@@ -97,7 +97,7 @@ bash deploy.sh --stop      # 停止服务
 
 > 用 `curl | bash` 方式安装的，可先把脚本保存到本地再使用这些命令：
 > ```bash
-> curl -fsSL https://raw.githubusercontent.com/<你的用户名>/oc-deploy/main/scripts/deploy.sh -o deploy.sh
+> curl -fsSL https://raw.githubusercontent.com/yff124/oc-deploy/main/scripts/deploy.sh -o deploy.sh
 > bash deploy.sh --token
 > ```
 
