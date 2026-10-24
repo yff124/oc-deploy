@@ -5,46 +5,40 @@
 
 ---
 
-## 一条命令部署
-
-> **网络提示**：`raw.githubusercontent.com` 在国内经常超时（实测 3 次里有 2 次 10 秒连不上）。
-> 下面每条命令都给了**两个通道**，第一个不行就用第二个。
-
-### 通道1：GitHub 直连（海外/网络好时）
+## 一条命令部署（Linux / macOS）
 
 ```bash
+{ curl -fsSL --max-time 20 https://cdn.jsdelivr.net/gh/yff124/oc-deploy@main/scripts/deploy.sh \
+  || curl -fsSL --max-time 30 https://raw.githubusercontent.com/yff124/oc-deploy/main/scripts/deploy.sh; } | bash
+```
+
+复制这一整段（含大括号）粘进终端回车就行。它会**自动选快的通道**：先走 jsDelivr CDN（国内实测 0.7 秒），
+连不上再自动换 GitHub 直连。
+
+### Windows（PowerShell 管理员）
+
+```powershell
+$u=@("https://cdn.jsdelivr.net/gh/yff124/oc-deploy@main/scripts/deploy.ps1","https://raw.githubusercontent.com/yff124/oc-deploy/main/scripts/deploy.ps1")
+foreach($x in $u){ try{ iwr -useb $x -OutFile "$env:TEMP\deploy.ps1"; break }catch{} }
+powershell -ExecutionPolicy Bypass -File "$env:TEMP\deploy.ps1"
+```
+
+### 只有单通道能用时
+
+```bash
+# 只走 CDN
+curl -fsSL https://cdn.jsdelivr.net/gh/yff124/oc-deploy@main/scripts/deploy.sh | bash
+
+# 只走 GitHub
 curl -fsSL https://raw.githubusercontent.com/yff124/oc-deploy/main/scripts/deploy.sh | bash
 ```
 
-### 通道2：jsDelivr CDN（国内推荐，实测 0.7 秒）
+> ⚠️ **超时值很关键**：实测网络波动时 `--max-time 8` 会被误判成"下载失败"，
+> 所以上面都用 20/30 秒，别改成更小的值。
 
-```bash
-curl -fsSL https://cdn.jsdelivr.net/gh/yff124/oc-deploy@main/scripts/deploy.sh | bash
-```
+### 如果两条通道都失败
 
-### Windows PowerShell（管理员）
-
-```powershell
-# 通道1
-iwr -useb https://raw.githubusercontent.com/yff124/oc-deploy/main/scripts/deploy.ps1 | iex
-
-# 通道2（国内推荐）
-iwr -useb https://cdn.jsdelivr.net/gh/yff124/oc-deploy@main/scripts/deploy.ps1 | iex
-```
-
-**双保险命令**（自动切换，推荐给客户用）：
-
-```bash
-(curl -fsSL --max-time 20 https://cdn.jsdelivr.net/gh/yff124/oc-deploy@main/scripts/deploy.sh \
- || curl -fsSL --max-time 30 https://raw.githubusercontent.com/yff124/oc-deploy/main/scripts/deploy.sh) | bash
-```
-
-> ⚠️ **超时值很关键**：实测网络波动时 8 秒会误判失败，建议 `--max-time` 不少于 20 秒。
-> 把 `yff124` 换成你自己的 GitHub 用户名。
-
-### 如果两条命令都失败
-
-说明网络限制较严。用最稳妥的方式——**手动下载文件再执行**：
+说明网络限制较严。用最稳的方式——**手动下文件再跑**：
 
 ```bash
 # 方式A：浏览器打开链接，右键另存为 deploy.sh，然后
@@ -53,6 +47,8 @@ bash deploy.sh
 # 方式B：用 wget 代替 curl
 wget -qO- https://cdn.jsdelivr.net/gh/yff124/oc-deploy@main/scripts/deploy.sh | bash
 ```
+
+> 上面用的是我自己的仓库 `yff124/oc-deploy`。你要是 fork 了自己用，把 `yff124` 换成你的用户名就行。
 
 ---
 
